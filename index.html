@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activity Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script>
+  // 1. Disable Right Click
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  // 2. Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+  document.onkeydown = function(e) {
+    if(event.keyCode == 123) { // F12
+       return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+       return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+       return false;
+    }
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U (View Source)
+       return false;
+    }
+  }
+</script>
+</head>
+
+<body>
+  <main id="pdfRoot">
+    <header>
+      <div style="display:flex; align-items:center; gap:15px;">
+        <h1>Activity Dashboard</h1>
+        <button id="themeToggle" class="icon-btn" title="Toggle Theme">🌙</button>
+      </div>
+
+      <div class="controls">
+        <div class="daily-ring-container" title="Today's Progress">
+          <svg class="ring-svg" viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="dailyRingPath" class="ring-progress" stroke-dashoffset="100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <span id="dailyText" style="font-size:0.8rem; font-weight:bold;">0/0</span>
+        </div>
+
+        <button id="addHabitBtn" class="primary">+ New Habit</button>
+        <select id="month"></select>
+        <select id="year"></select>
+        <a href="master.html"><button style="background:#4f46e5; color:white;">⚡ Master View</button></a>
+        <button id="exportPdfBtn">Export</button>
+        <button onclick="logout()" style="background:#ef4444; color:white;">Exit</button>
+      </div>
+    </header>
+
+    <div class="chart-alignment-wrapper">
+      <div class="chart-spacer">
+        <h3 style="margin:0; font-size:0.9rem; color:var(--text-muted);">Daily Consistency</h3>
+      </div>
+      <div class="chart-container">
+        <canvas id="dailyProgressChart"></canvas>
+      </div>
+    </div>
+
+    <section class="grid-container">
+      <div id="habitGrid"></div>
+    </section>
+
+    <div class="footer-stats">
+      <div class="widget-card">
+        <h3 class="widget-title">Monthly Distribution</h3>
+        <div style="height: 200px; display:flex; justify-content:center;">
+          <canvas id="monthlyPieChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="widget-card">
+        <h3 class="widget-title">Top Performing Habits</h3>
+        <div id="leaderboardList"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="habitModal" class="modal-overlay">
+    <div class="modal">
+      <h2 id="modalTitle">New Habit</h2>
+      <label>Habit Name</label>
+      <input type="text" id="habitInput" placeholder="e.g. Read 10 pages">
+      <label>Monthly Goal (Days)</label>
+      <input type="number" id="habitGoalInput" placeholder="20" value="20">
+      <div class="modal-btns">
+        <button onclick="closeModal()">Cancel</button>
+        <button id="saveHabitBtn" class="primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="supabase.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="habits.js"></script>
+  <script type="module" src="analytics.js"></script>
+  <script type="module" src="charts.js"></script>
+  <script type="module" src="pdf.js"></script>
+</body>
+</html>

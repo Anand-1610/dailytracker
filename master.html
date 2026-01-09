@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  // 1. Disable Right Click
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  // 2. Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+  document.onkeydown = function(e) {
+    if(event.keyCode == 123) { // F12
+       return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+       return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+       return false;
+    }
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U (View Source)
+       return false;
+    }
+  }
+</script>
+</head>
+<body>
+  <main>
+    <header>
+      <div style="display:flex; align-items:center; gap:15px;">
+        <h1>⚡ Master Analytics</h1>
+        <button id="themeToggle" class="icon-btn" title="Toggle Theme">🌙</button>
+      </div>
+      <a href="index.html" style="text-decoration:none;">
+        <button>← Back to Tracker</button>
+      </a>
+    </header>
+
+    <div class="widget-card" style="margin-bottom: 25px; border-left: 5px solid var(--primary);">
+      <h3 class="widget-title">🤖 AI Performance Coach</h3>
+      <div id="aiInsights" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+        </div>
+    </div>
+
+    <div class="dashboard-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px;">
+      
+      <div class="widget-card" style="display:flex; flex-direction:column; min-height: 450px;">
+        <h3 class="widget-title">Habit Balance (Radar)</h3>
+        <div style="flex-grow:1; position:relative; width: 100%; height: 100%; min-height: 350px;">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+
+      <div class="widget-card" style="display:flex; flex-direction:column; min-height: 450px;">
+        <h3 class="widget-title">Peak Performance Days</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">Which days of the week are you most consistent?</p>
+        <div style="flex-grow:1; position:relative; width: 100%; height: 100%; min-height: 350px;">
+          <canvas id="dayOfWeekChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+      
+      <div class="widget-card" style="height: auto;">
+        <h3 class="widget-title">🔗 Impact Analysis</h3>
+        <div id="correlationGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;"></div>
+      </div>
+
+      <div class="widget-card" style="height: auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+          <h3 class="widget-title" style="margin:0;">📔 Daily Log</h3>
+          <input type="date" id="journalDate" style="padding:5px; font-size:0.8rem;">
+        </div>
+        
+        <textarea id="journalInput" placeholder="Why did you miss habits today? How do you feel?" 
+          style="width:100%; height:100px; padding:10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text-main); resize:none;"></textarea>
+        
+        <div style="display:flex; justify-content:space-between; margin-top:10px; align-items:center;">
+          <select id="journalMood">
+            <option value="neutral">😐 Neutral</option>
+            <option value="happy">🔥 Productive</option>
+            <option value="stressed">😫 Stressed</option>
+            <option value="sick">🤒 Sick</option>
+          </select>
+          <button id="saveJournalBtn" class="primary">Save Note</button>
+        </div>
+
+        <div id="savedNoteDisplay" style="margin-top:15px; padding:10px; background:var(--bg); border-radius:6px; font-size:0.9rem; font-style:italic; display:none;">
+          </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+        
+        <button id="historyBtn" style="width:100%; padding:10px; background:transparent; border:1px solid var(--primary); color:var(--primary); border-radius:8px; cursor:pointer; font-weight:600; transition:all 0.2s;">
+          📜 View Month History
+        </button>
+        
+        <div id="historyList" style="display:none; margin-top:15px; max-height:300px; overflow-y:auto; padding-right:5px;">
+          </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module" src="master.js"></script>
+</body>
+</html>
