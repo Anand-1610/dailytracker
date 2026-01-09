@@ -91,8 +91,9 @@ if (form) {
           email,
           password,
           options: {
-            // Auto-redirect back to dashboard after email click
-            emailRedirectTo: window.location.origin + "/index.html" 
+            // FIX: Dynamically gets the full path including the repository name
+            // This prevents the 404 error on GitHub Pages
+            emailRedirectTo: window.location.href.replace("login.html", "index.html")
           }
         });
 
