@@ -30,6 +30,7 @@ const now = new Date();
 const params = new URLSearchParams(window.location.search);
 const selMonth = params.get('month') ? parseInt(params.get('month')) : (now.getMonth() + 1);
 const selYear = params.get('year') ? parseInt(params.get('year')) : now.getFullYear();
+// This correctly calculates 28, 29, 30, or 31
 const daysInMonth = new Date(selYear, selMonth, 0).getDate();
 const todayDate = new Date();
 const todayStr = `${todayDate.getFullYear()}-${String(todayDate.getMonth()+1).padStart(2,"0")}-${String(todayDate.getDate()).padStart(2,"0")}`;
@@ -107,6 +108,12 @@ function renderGrid() {
   if(!gridContainer) return;
   const table = document.createElement("div");
   table.className = "habit-table";
+
+  // --- CRITICAL UPDATE START ---
+  // Pass the exact number of days (28, 30, 31) to CSS variable
+  // This makes the grid columns dynamic instead of fixed at 31
+  table.style.setProperty('--month-days', daysInMonth);
+  // --- CRITICAL UPDATE END ---
 
   table.appendChild(createCell("Habit", "h-cell sticky-col"));
   table.appendChild(createCell("Streak", "h-cell"));

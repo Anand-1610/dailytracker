@@ -91,9 +91,12 @@ button.primary { background: var(--primary); color: white; border: none; }
 
 .habit-table {
   display: grid;
-  /* 180px Name | 50px Streak | 80px Progress | AUTO-FIT COLUMNS for Days */
-  grid-template-columns: 180px 50px 80px repeat(31, 1fr); 
-  gap: 2px; 
+  /* OLD: grid-template-columns: 180px 50px 80px repeat(31, 1fr); */
+  
+  /* NEW: Dynamic columns */
+  grid-template-columns: 180px 50px 80px repeat(var(--month-days, 31), 1fr);
+  
+  gap: 1px;
   align-items: center;
 }
 
